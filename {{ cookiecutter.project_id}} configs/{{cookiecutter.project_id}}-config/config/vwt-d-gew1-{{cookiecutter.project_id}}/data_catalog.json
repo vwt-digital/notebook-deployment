@@ -17,9 +17,9 @@
         "hasEmail": "mailto:{{cookiecutter.email}}"
       },
       "publisher": {
-        "name": "{{cookiecuter.publisherName}}",
+        "name": "{{cookiecutter.publisherName}}",
         "subOrganizationOf": {
-          "name": "{{cookiecuter.publisherOrganization}}"
+          "name": "{{cookiecutter.publisherOrganization}}"
         }
       },
       "keyword": [],
