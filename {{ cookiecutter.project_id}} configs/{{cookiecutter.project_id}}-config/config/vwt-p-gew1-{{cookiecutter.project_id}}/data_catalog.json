@@ -1,0 +1,41 @@
+{
+  "conformsTo": "https://vwt-digital.github.io/project-company-data.github.io/v1.1/schema",
+  "projectId": "vwt-p-gew1-{{cookiecutter.project_id}}",
+  "backupDestination": "vwt-p-gew4-dat-backup-vwt-p-gew1-{{cookiecutter.project_id}}-backup-stg",
+  "publishDataCatalog": {
+    "topic": "vwt-p-gew1-odh-hub-dat-data-catalogs",
+    "project": "vwt-p-gew1-odh-hub"
+  },
+  "dataset": [
+    {
+      "identifier": "{{cookiecutter.dataset_identifier}}",
+      "title": "{{cookiecutter.project_title}}",
+      "accessLevel": "{{cookiecutter.dataset_accessLevel}}",
+      "rights": "{{cookiecutter.dataset_accessLevelReason}}",
+      "contactPoint": {
+        "fn": "{{cookiecutter.name}}",
+        "hasEmail": "mailto:{{cookiecutter.email}}"
+      },
+      "publisher": {
+        "name": "{{cookiecuter.publisherName}}",
+        "subOrganizationOf": {
+          "name": "{{cookiecuter.publisherOrganization}}"
+        }
+      },
+      "keyword": [],
+      "modified": "{{cookiecutter.date}}",
+      "spatial": "{{cookiecutter.spatial}}",
+      "issued": "{{cookiecutter.date}}",
+      "distribution": [
+        {
+          "accessURL": "https://console.cloud.google.com/storage/browser/vwt-p-gew1-{{cookiecutter.dataset_id}}-stg",
+          "mediaType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          "deploymentZone": "europe-west1",
+          "format": "blob-storage",
+          "title": "vwt-p-gew1-{{cookiecutter.dataset_id}}-stg",
+          "description": "VWT production environment at Google europe-west1 containing blob storage for {{cookiecutter.project_title}}"
+        }
+      ]
+    }
+  ]
+}

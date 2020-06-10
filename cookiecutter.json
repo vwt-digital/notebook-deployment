@@ -1,0 +1,18 @@
+{
+	"project_title": "My Data Science Project",
+    "project_id": "{{ cookiecutter.project_title|lower|replace(' ', '-') }}",
+    "name": "FirstName LastName",
+    "email": "email@vwt.digital",
+    "date": "{% now 'utc', '%Y-%m' %}",
+    "dataset_id": "{{cookiecutter.project_id}}-data",
+    "dataset_domain": "dataset_domain",
+    "dataset_identifier": "vwt/{{cookiecutter.dataset_domain}}/{{cookiecutter.dataset_id}}",
+    "dataset_accessLevel": ["restricted", "internal", "confidential", "public"],
+    "dataset_accessLevelReason": "Data set contains data. Therefore the access level is {{cookiecutter.dataset_accessLevel}}",
+    "spatial": "Netherlands",
+    "repoTitle": "Source for {{cookiecutter.project_title}} config",
+    "repoAccessLevel": ["restricted", "internal", "confidential", "public"],
+    "repoAccessLevelReason": "Data set contains data. Therefore the access level is {{cookiecutter.repoAccessLevel}}",
+    "publisherName": "Digital Ambition Team",
+    "publisherOrganization": "VolkerWessels Telecom"
+}
