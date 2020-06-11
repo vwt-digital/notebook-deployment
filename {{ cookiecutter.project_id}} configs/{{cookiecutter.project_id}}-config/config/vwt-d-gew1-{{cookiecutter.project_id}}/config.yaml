@@ -1,0 +1,7 @@
+imports:
+- path: notebook_instance.jinja
+
+
+resources:
+- name: vwt-d-gew1-{{cookiecutter.project_id}}-notebook
+  type: notebook_instance.jinja

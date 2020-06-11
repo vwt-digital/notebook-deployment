@@ -9,3 +9,27 @@ steps:
       - |
         git clone --branch=${BRANCH_NAME} https://github.com/vwt-digital/dcat-deploy.git
         dcat-deploy/deploy_dcat_gcp.sh config/${PROJECT_ID}/data_catalog.json ${PROJECT_ID} ${BRANCH_NAME}
+
+  # Get notebook-deployment repo
+  - name: 'gcr.io/cloud-builders/git'
+    args:
+      - 'clone'
+      - '--branch=${BRANCH_NAME}'
+      - 'https://github.com/vwt-digital/notebook-deployment.git'
+
+  # Copy
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        cp config/${PROJECT_ID}/config.yaml notebook-deployment/notebook-vm/
+
+
+  # Deploy vm with notebook
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - sh deploy.sh ${PROJECT_ID} ${PROJECT_ID}-notebook-vm
+    dir: 'notebook-deployment/notebook-vm'
