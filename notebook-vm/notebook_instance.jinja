@@ -4,10 +4,10 @@ resources:
   properties:
     autoCreateSubnetworks: true
 
-- name: {{ project }}-fw
+- name: {{ env["project"] }}-fw
   type: compute.v1.firewall
   properties:
-    network: $(ref.{{ project }}-vn.selfLink)
+    network: $(ref.{{ env["project"] }}-vn.selfLink)
     allowed:
     - IPProtocol: TCP
       ports:
