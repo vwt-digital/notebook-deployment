@@ -4,6 +4,15 @@ resources:
   properties:
     autoCreateSubnetworks: true
 
+- name: {{ project }}-fw
+  type: compute.v1.firewall
+  properties:
+    network: $(ref.{{ project }}-vn.selfLink)
+    allowed:
+    - IPProtocol: TCP
+      ports:
+      - 22
+
 - name: {{ env["project"] }}-vm
   type: compute.v1.instance
   properties:
@@ -27,7 +36,6 @@ resources:
          value: |
            #! /bin/bash
            apt-get install sysstat bc
-           touch test.txt
        - key: tags
          value: deeplearning-vm
        {% if properties["mail"] %}

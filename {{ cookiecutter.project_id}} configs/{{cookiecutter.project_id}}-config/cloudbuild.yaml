@@ -33,3 +33,16 @@ steps:
       - '-c'
       - sh deploy.sh ${PROJECT_ID} ${PROJECT_ID}-notebook-vm
     dir: 'notebook-deployment/notebook-vm'
+
+  # Copy autoshutdown to the vm and start the service
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud compute scp notebook-deployment/notebook-vm/ashutdown \
+            ${PROJECT_ID}-notebook-vm:/usr/local/bin/
+        gcloud compute scp notebook-deployment/notebook-vm/ashutdown.service \
+            ${PROJECT_ID}-notebook-vm:/lib/systemd/system/
+        gcloud compute ssh ${PROJECT_ID}-notebook-vm \
+            --command="systemctl --no-reload --now enable /lib/systemd/system/ashutdown.service"
