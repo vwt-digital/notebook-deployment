@@ -41,8 +41,11 @@ steps:
       - '-c'
       - |
         gcloud compute scp notebook-deployment/notebook-vm/ashutdown \
-            ${PROJECT_ID}-notebook-vm:/usr/local/bin/
+          ${PROJECT_ID}-notebook-vm:/usr/local/bin/ \
+          --zone europe-west1-b
         gcloud compute scp notebook-deployment/notebook-vm/ashutdown.service \
-            ${PROJECT_ID}-notebook-vm:/lib/systemd/system/
+          ${PROJECT_ID}-notebook-vm:/lib/systemd/system/ \
+          --zone europe-west1-b
         gcloud compute ssh ${PROJECT_ID}-notebook-vm \
-            --command="systemctl --no-reload --now enable /lib/systemd/system/ashutdown.service"
+          --command="systemctl --no-reload --now enable /lib/systemd/system/ashutdown.service" \
+          --zone europe-west1-b
