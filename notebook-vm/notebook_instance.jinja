@@ -37,8 +37,8 @@ resources:
            #! /bin/bash
            apt-get install sysstat bc
 
-           {% include "ashutdown" %} >> /usr/local/bin/ashutdown
-           {% include "ashutdown.service" %} >> /lib/systemd/system/ashutdown.service
+           {% include "notebook-vm/ashutdown" %} >> /usr/local/bin/ashutdown
+           {% include "notebook-vm/ashutdown.service" %} >> /lib/systemd/system/ashutdown.service
            systemctl --no-reload --now enable /lib/systemd/system/ashutdown.service
 
        - key: tags
