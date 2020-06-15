@@ -24,6 +24,7 @@ steps:
       - '-c'
       - |
         cp config/${PROJECT_ID}/config.yaml notebook-deployment/notebook-vm/
+        cp config/${PROJECT_ID}/config.py notebook-deployment/vm-shutdown-function/
 
 
   # Deploy vm with notebook
@@ -33,3 +34,40 @@ steps:
       - '-c'
       - sh deploy.sh ${PROJECT_ID} ${PROJECT_ID}-notebook-vm
     dir: 'notebook-deployment/notebook-vm'
+
+  # Deploy auto shutdown function
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'functions'
+      - 'deploy'
+      - '${PROJECT_ID}-auto-shutdown-func'
+      - '--entry-point=auto_shutdown'
+      - '--runtime=python37'
+      - '--timeout=540'
+      - '--memory=2048MB'
+      - '--trigger-http'
+      - '--project=${PROJECT_ID}'
+      - '--region=europe-west1'
+      - '--service-account=${PROJECT_ID}@appspot.gserviceaccount.com'
+    dir: 'notebook-deployment/vm-shutdown-function/'
+
+  # Delete appointments schedule job for recreation
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - 'gcloud scheduler jobs delete --quiet ${PROJECT_ID}-auto-shutdown-job || exit 0'
+
+  # (Re)create scheduler job to shutdown inactive vms
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'scheduler'
+      - 'jobs'
+      - 'create'
+      - 'http'
+      - '${PROJECT_ID}-auto-shutdown-job'
+      - '--schedule=*/5 * * * *'
+      - '--uri=https://europe-west1-${PROJECT_ID}.cloudfunctions.net/${PROJECT_ID}-auto-shutdown-func'
+      - '--project=${PROJECT_ID}'
+      - '--oidc-service-account-email=${PROJECT_ID}@appspot.gserviceaccount.com'
+      - '--oidc-token-audience=https://europe-west1-${PROJECT_ID}.cloudfunctions.net/${PROJECT_ID}-ingest-func'
