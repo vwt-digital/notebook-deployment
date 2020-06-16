@@ -2,24 +2,30 @@ from google.cloud import monitoring_v3
 from google.cloud.monitoring_v3 import query
 from googleapiclient import discovery
 import config
+import logging
 
 service = discovery.build('compute', 'v1')
 
+logging.basicConfig(level=logging.DEBUG)
 
-def auto_shutdown():
-    notebook_vms = get_notebook_vms()
+
+def auto_shutdown(args):
+    # notebook_vms = get_notebook_vms()
     instances = monitor_vms()
 
     for vm in instances:
-        if vm.metric.labels['instance_name'] in notebook_vms:
-            points = [x.value.double_value * 100 for x in vm.points]
-            if max(points) < config.min_cpu_usage_percent:
-                shutdown(vm.metric.labels['instance_name'])
+        logging.debug(f"Checking {vm.metric.labels['instance_name']}")
+        # if vm.metric.labels['instance_name'] in notebook_vms:
+        points = [x.value.double_value * 100 for x in vm.points]
+        if max(points) < config.min_cpu_usage_percent:
+            shutdown(vm.metric.labels['instance_name'])
 
 
 def shutdown(instance):
+    logging.info(f"Shutting down {instance}...")
     request = service.instances().stop(project=config.project, zone=config.zone, instance=instance)
     request.execute()
+    logging.info(f"{instance} shut down.")
 
 
 def monitor_vms():
