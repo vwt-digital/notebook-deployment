@@ -45,7 +45,7 @@ steps:
       - '--entry-point=auto_shutdown'
       - '--runtime=python37'
       - '--timeout=540'
-      - '--memory=2048MB'
+      - '--memory=256MB'
       - '--trigger-http'
       - '--project=${PROJECT_ID}'
       - '--region=europe-west1'
