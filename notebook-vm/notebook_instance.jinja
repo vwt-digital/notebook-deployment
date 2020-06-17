@@ -35,6 +35,7 @@ resources:
        - key: startup-script
          value: |
             #! /bin/bash
+            mkdir /home/jupyter/
             wget  -O /home/jupyter/notebook.ipynb "https://raw.githubusercontent.com/vwt-digital/notebook-deployment/develop/notebook-vm/notebook.ipynb"
 
        - key: tags
