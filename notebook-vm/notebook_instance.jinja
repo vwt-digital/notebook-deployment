@@ -35,6 +35,8 @@ resources:
        - key: startup-script
          value: |
             #! /bin/bash
+            wget  -O /home/jupyter/ "https://raw.githubusercontent.com/vwt-digital/notebook-deployment/develop/notebook-vm/notebook.ipynb"
+
        - key: tags
          value: deeplearning-vm
        {% if properties["mail"] %}
