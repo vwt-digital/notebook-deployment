@@ -37,6 +37,7 @@ steps:
 
   # Deploy auto shutdown function
   - name: 'gcr.io/cloud-builders/gcloud'
+    id: 'auto-shutdown-deploy'
     args:
       - 'functions'
       - 'deploy'
@@ -50,6 +51,22 @@ steps:
       - '--region=europe-west1'
       - '--service-account=${PROJECT_ID}@appspot.gserviceaccount.com'
     dir: 'notebook-deployment/vm-shutdown-function/'
+
+
+  # Add invoker role to function
+  - name: 'gcr.io/cloud-builders/gcloud'
+    waitFor:
+      - auto-shutdown-deploy
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        echo '{"bindings":[{"members":["serviceAccount:${PROJECT_ID}@appspot.gserviceaccount.com"],'\
+        '"role":"roles/cloudfunctions.invoker"},{"members":'\
+        '["serviceAccount:${PROJECT_ID}@appspot.gserviceaccount.com"],"role":"roles/monitoring.viewer"}]}'\
+        > auto_shutdown_func_permissions.json
+        gcloud beta functions set-iam-policy ${PROJECT_ID}-auto-shutdown-func --region=europe-west1 \
+          --project=${PROJECT_ID} auto_shutdown_func_permissions.json
 
   # Delete appointments schedule job for recreation
   - name: 'gcr.io/cloud-builders/gcloud'
