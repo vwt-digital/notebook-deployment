@@ -62,8 +62,7 @@ steps:
       - '-c'
       - |
         echo '{"bindings":[{"members":["serviceAccount:${PROJECT_ID}@appspot.gserviceaccount.com"],'\
-        '"role":"roles/cloudfunctions.invoker"},{"members":'\
-        '["serviceAccount:${PROJECT_ID}@appspot.gserviceaccount.com"],"role":"roles/monitoring.viewer"}]}'\
+        '"role":"roles/cloudfunctions.invoker"}]}'\
         > auto_shutdown_func_permissions.json
         gcloud beta functions set-iam-policy ${PROJECT_ID}-auto-shutdown-func --region=europe-west1 \
           --project=${PROJECT_ID} auto_shutdown_func_permissions.json
