@@ -18,9 +18,8 @@ Depending on your needs you only use the relevant evironments. Probably you init
 3. Add the project files to [{{cookiecutter.project_id}}-config](https://github.com/vwt-digital-config/{{cookiecutter.project_id}}-config)
 	1. Check the contents of `{{cookiecutter.project_id}}-config`.  
     It should contain:
-    1. Config for both prod and dev.  
-       The config creates one storage bucket. If you need more: copy paste the one that is created and change the fields accordingly.
-    2. A basic notebook
-    4. A initial readme.md
-    5. A licence 
-	3. Add all this to the newly created repo
+        1. Config for both prod and dev.  
+           The config creates one storage bucket. If you need more: copy paste the one that is created and change the fields accordingly.
+        2. A basic notebook
+        3. A initial readme.md
+        4. Add all this to the newly created repo
