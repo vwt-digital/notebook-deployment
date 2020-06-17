@@ -5,9 +5,19 @@
   "odrlPolicy": {
     "permission": [
       {
-          "action": "roles/editor",
-          "assignee": "group:development@vwt.digital",
-          "target": "vwt-d-gew1-{{cookiecutter.project_id}}"
+        "action": "roles/editor",
+        "assignee": "group:development@vwt.digital",
+        "target": "vwt-d-gew1-{{cookiecutter.project_id}}"
+      },
+      {
+        "action": "roles/monitoring.viewer",
+        "assignee": "serviceAccount:{{cookiecutter.project_id}}@appspot.gserviceaccount.com",
+        "target": "vwt-d-gew1-{{cookiecutter.project_id}}"
+      },
+      {
+        "action": "roles/cloudmigration.inframanager",
+        "assignee": "serviceAccount:{{cookiecutter.project_id}}@appspot.gserviceaccount.com",
+        "target": "vwt-d-gew1-{{cookiecutter.project_id}}"
       }
     ],
     "uid": "vwt-d-gew1-{{cookiecutter.project_id}}-policy"

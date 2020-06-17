@@ -4,6 +4,21 @@
   "defaultNetwork": "false",
   "odrlPolicy": {
     "permission": [
+      {
+        "action": "roles/editor",
+        "assignee": "group:development@vwt.digital",
+        "target": "vwt-p-gew1-{{cookiecutter.project_id}}"
+      },
+      {
+        "action": "roles/monitoring.viewer",
+        "assignee": "serviceAccount:{{cookiecutter.project_id}}@appspot.gserviceaccount.com",
+        "target": "vwt-p-gew1-{{cookiecutter.project_id}}"
+      },
+      {
+        "action": "roles/cloudmigration.inframanager",
+        "assignee": "serviceAccount:{{cookiecutter.project_id}}@appspot.gserviceaccount.com",
+        "target": "vwt-p-gew1-{{cookiecutter.project_id}}"
+      }
     ],
     "uid": "vwt-p-gew1-{{cookiecutter.project_id}}-policy"
   },
