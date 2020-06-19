@@ -18,6 +18,11 @@
         "action": "roles/cloudmigration.inframanager",
         "assignee": "serviceAccount:{{cookiecutter.project_id}}@appspot.gserviceaccount.com",
         "target": "vwt-d-gew1-{{cookiecutter.project_id}}"
+      },
+      {
+        "action": "roles/notebooks.viewer",
+        "assignee": "serviceAccount:data-science@vwt-d-gew1-{cookiecutter.project_id}}.iam.gserviceaccount.com",
+        "target": "vwt-d-gew1-{{cookiecutter.project_id}}"
       }
     ],
     "uid": "vwt-d-gew1-{{cookiecutter.project_id}}-policy"
@@ -38,5 +43,8 @@
     "appengine.googleapis.com",
     "compute.googleapis.com",
     "oslogin.googleapis.com"
+  ],
+  "serviceAccounts": [
+    "data-science"
   ]
 }

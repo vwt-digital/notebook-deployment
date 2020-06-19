@@ -5,3 +5,5 @@ imports:
 resources:
 - name: vwt-d-gew1-{{cookiecutter.project_id}}-notebook
   type: notebook_instance.jinja
+  properties:
+    serviceAccount: data-science

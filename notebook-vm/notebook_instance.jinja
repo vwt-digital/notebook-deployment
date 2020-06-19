@@ -62,7 +62,7 @@ resources:
     {% endif %}
     serviceAccounts:
     {% if properties["service-account"] %}
-      - email: {{ properties["service-account"] }}
+      - email: {{ properties["service-account"] }}@vwt-d-gew1-{{ env["project"] }}.iam.gserviceaccount.com
         scopes:
         - https://www.googleapis.com/auth/cloud-platform
         - https://www.googleapis.com/auth/userinfo.email

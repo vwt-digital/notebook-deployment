@@ -35,7 +35,17 @@
           "title": "vwt-d-gew1-{{cookiecutter.dataset_id}}-stg",
           "description": "VWT development environment at Google europe-west1 containing blob storage for {{cookiecutter.project_title}}"
         }
-      ]
+      ],
+      "odrlPolicy": {
+        "uuid": "vwt-d-gew1-{{cookiecutter.dataset_id}}-stg",
+        "permission": [
+          {
+            "target": "vwt-d-gew1-{{cookiecutter.dataset_id}}-stg",
+            "assignee": "serviceAccount:data-science@vwt-d-gew1-{{cookiecutter.project_id}}.iam.gserviceaccount.com",
+            "action": "read"
+          }
+        ]
+      }
     }
   ]
 }
