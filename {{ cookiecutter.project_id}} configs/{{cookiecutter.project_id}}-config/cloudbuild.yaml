@@ -1,0 +1,89 @@
+---
+timeout: 1200s
+steps:
+  # Deploy data catalog
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        git clone --branch=${BRANCH_NAME} https://github.com/vwt-digital/dcat-deploy.git
+        dcat-deploy/deploy_dcat_gcp.sh config/${PROJECT_ID}/data_catalog.json ${PROJECT_ID} ${BRANCH_NAME}
+
+  # Get notebook-deployment repo
+  - name: 'gcr.io/cloud-builders/git'
+    args:
+      - 'clone'
+      - '--branch=${BRANCH_NAME}'
+      - 'https://github.com/vwt-digital/notebook-deployment.git'
+
+  # Copy
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        cp config/${PROJECT_ID}/config.yaml notebook-deployment/notebook-vm/
+        cp config/${PROJECT_ID}/config.py notebook-deployment/vm-shutdown-function/
+
+
+  # Deploy vm with notebook
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - sh deploy.sh ${PROJECT_ID} ${PROJECT_ID}-notebook-vm
+    dir: 'notebook-deployment/notebook-vm'
+
+  # Deploy auto shutdown function
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: 'auto-shutdown-deploy'
+    args:
+      - 'functions'
+      - 'deploy'
+      - '${PROJECT_ID}-auto-shutdown-func'
+      - '--entry-point=auto_shutdown'
+      - '--runtime=python37'
+      - '--timeout=540'
+      - '--memory=256MB'
+      - '--trigger-http'
+      - '--project=${PROJECT_ID}'
+      - '--region=europe-west1'
+      - '--service-account=${PROJECT_ID}@appspot.gserviceaccount.com'
+    dir: 'notebook-deployment/vm-shutdown-function/'
+
+
+  # Add invoker role to function
+  - name: 'gcr.io/cloud-builders/gcloud'
+    waitFor:
+      - auto-shutdown-deploy
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        echo '{"bindings":[{"members":["serviceAccount:${PROJECT_ID}@appspot.gserviceaccount.com"],'\
+        '"role":"roles/cloudfunctions.invoker"}]}'\
+        > auto_shutdown_func_permissions.json
+        gcloud beta functions set-iam-policy ${PROJECT_ID}-auto-shutdown-func --region=europe-west1 \
+          --project=${PROJECT_ID} auto_shutdown_func_permissions.json
+
+  # Delete appointments schedule job for recreation
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - 'gcloud scheduler jobs delete --quiet ${PROJECT_ID}-auto-shutdown-job || exit 0'
+
+  # (Re)create scheduler job to shutdown inactive vms
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'scheduler'
+      - 'jobs'
+      - 'create'
+      - 'http'
+      - '${PROJECT_ID}-auto-shutdown-job'
+      - '--schedule=0 * * * *'
+      - '--uri=https://europe-west1-${PROJECT_ID}.cloudfunctions.net/${PROJECT_ID}-auto-shutdown-func'
+      - '--project=${PROJECT_ID}'
+      - '--oidc-service-account-email=${PROJECT_ID}@appspot.gserviceaccount.com'
+      - '--oidc-token-audience=https://europe-west1-${PROJECT_ID}.cloudfunctions.net/${PROJECT_ID}-auto-shutdown-func'

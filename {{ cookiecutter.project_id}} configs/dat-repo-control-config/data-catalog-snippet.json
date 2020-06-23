@@ -1,0 +1,37 @@
+{
+  "identifier": "vwt/dat/repo/{{cookiecutter.project_id}}-config",
+  "title": "{{cookiecutter.repoTitle}}",
+  "accessLevel": "{{cookiecutter.repoAccessLevel}}",
+  "rights": "{{cookiecutter.repoAccessLevelReason}}",
+  "contactPoint": {
+    "fn": "{{cookiecutter.name}}",
+    "hasEmail": "mailto:{{cookiecutter.email}}"
+  },
+  "publisher": {
+    "name": "{{cookiecutter.publisherName}}",
+    "subOrganizationOf": {
+      "name": "{{cookiecutter.publisherOrganization}}"
+    }
+  },
+  "keyword": [],
+  "issued": "{{cookiecutter.date}}",
+  "distribution": [
+    {
+      "accessURL": "https://github.com/vwt-digital-config/{{cookiecutter.project_id}}-config",
+      "downloadURL": "https://github.com/vwt-digital-config/{{cookiecutter.project_id}}-config.git",
+      "format": "gitrepo",
+      "title": "vwt-digital-config/{{cookiecutter.project_id}}-config",
+      "description": "VWT GitHub config repository"
+    }
+  ],
+  "odrlPolicy": {
+    "uid": "vwt-repo-{{cookiecutter.project_id}}-config-policy",
+    "permission": [
+      {
+        "target": "vwt-digital-config/{{cookiecutter.project_id}}-config",
+        "assignee": "group:development@vwt.digital",
+        "action": "write"
+      }
+    ]
+  }
+}

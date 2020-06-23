@@ -1,0 +1,50 @@
+{
+  "projectId": "vwt-d-gew1-{{cookiecutter.project_id}}",
+  "appEngineRegion": "europe-west",
+  "defaultNetwork": "false",
+  "odrlPolicy": {
+    "permission": [
+      {
+        "action": "roles/editor",
+        "assignee": "group:development@vwt.digital",
+        "target": "vwt-d-gew1-{{cookiecutter.project_id}}"
+      },
+      {
+        "action": "roles/monitoring.viewer",
+        "assignee": "serviceAccount:{{cookiecutter.project_id}}@appspot.gserviceaccount.com",
+        "target": "vwt-d-gew1-{{cookiecutter.project_id}}"
+      },
+      {
+        "action": "roles/cloudmigration.inframanager",
+        "assignee": "serviceAccount:{{cookiecutter.project_id}}@appspot.gserviceaccount.com",
+        "target": "vwt-d-gew1-{{cookiecutter.project_id}}"
+      },
+      {
+        "action": "roles/notebooks.viewer",
+        "assignee": "serviceAccount:data-science@vwt-d-gew1-{cookiecutter.project_id}}.iam.gserviceaccount.com",
+        "target": "vwt-d-gew1-{{cookiecutter.project_id}}"
+      }
+    ],
+    "uid": "vwt-d-gew1-{{cookiecutter.project_id}}-policy"
+  },
+  "triggers": [
+    {
+      "filename": "cloudbuild.yaml",
+      "github": {
+        "name": "{{cookiecutter.project_id}}-config",
+        "owner": "vwt-digital-config",
+        "push": {
+          "branch": "develop"
+        }
+      }
+    }
+  ],
+  "services": [
+    "appengine.googleapis.com",
+    "compute.googleapis.com",
+    "oslogin.googleapis.com"
+  ],
+  "serviceAccounts": [
+    "data-science"
+  ]
+}

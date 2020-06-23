@@ -1,0 +1,51 @@
+{
+  "conformsTo": "https://vwt-digital.github.io/project-company-data.github.io/v1.1/schema",
+  "projectId": "vwt-d-gew1-{{cookiecutter.project_id}}",
+  "backupDestination": "vwt-d-gew4-dat-backup-vwt-d-gew1-{{cookiecutter.project_id}}-backup-stg",
+  "publishDataCatalog": {
+    "topic": "vwt-d-gew1-odh-hub-dat-data-catalogs",
+    "project": "vwt-d-gew1-odh-hub"
+  },
+  "dataset": [
+    {
+      "identifier": "{{cookiecutter.dataset_identifier}}",
+      "title": "{{cookiecutter.project_title}}",
+      "accessLevel": "{{cookiecutter.dataset_accessLevel}}",
+      "rights": "{{cookiecutter.dataset_accessLevelReason}}",
+      "contactPoint": {
+        "fn": "{{cookiecutter.name}}",
+        "hasEmail": "mailto:{{cookiecutter.email}}"
+      },
+      "publisher": {
+        "name": "{{cookiecutter.publisherName}}",
+        "subOrganizationOf": {
+          "name": "{{cookiecutter.publisherOrganization}}"
+        }
+      },
+      "keyword": [],
+      "modified": "{{cookiecutter.date}}",
+      "spatial": "{{cookiecutter.spatial}}",
+      "issued": "{{cookiecutter.date}}",
+      "distribution": [
+        {
+          "accessURL": "https://console.cloud.google.com/storage/browser/vwt-d-gew1-{{cookiecutter.dataset_id}}-stg",
+          "mediaType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          "deploymentZone": "europe-west1",
+          "format": "blob-storage",
+          "title": "vwt-d-gew1-{{cookiecutter.dataset_id}}-stg",
+          "description": "VWT development environment at Google europe-west1 containing blob storage for {{cookiecutter.project_title}}"
+        }
+      ],
+      "odrlPolicy": {
+        "uuid": "vwt-d-gew1-{{cookiecutter.dataset_id}}-stg",
+        "permission": [
+          {
+            "target": "vwt-d-gew1-{{cookiecutter.dataset_id}}-stg",
+            "assignee": "serviceAccount:data-science@vwt-d-gew1-{{cookiecutter.project_id}}.iam.gserviceaccount.com",
+            "action": "read"
+          }
+        ]
+      }
+    }
+  ]
+}

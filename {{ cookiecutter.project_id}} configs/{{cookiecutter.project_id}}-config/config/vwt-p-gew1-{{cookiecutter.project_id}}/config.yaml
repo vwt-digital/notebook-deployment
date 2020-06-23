@@ -1,0 +1,9 @@
+imports:
+- path: notebook_instance.jinja
+
+
+resources:
+- name: vwt-p-gew1-{{cookiecutter.project_id}}-notebook
+  type: notebook_instance.jinja
+  properties:
+    service-account: data-science
