@@ -20,8 +20,18 @@
         "target": "vwt-p-gew1-{{cookiecutter.project_id}}"
       },
       {
-        "action": "roles/notebooks.viewer",
-        "assignee": "serviceAccount:data-science@vwt-p-gew1-{cookiecutter.project_id}}.iam.gserviceaccount.com",
+        "action": "roles/notebooks.admin",
+        "assignee": "serviceAccount:data-science@vwt-p-gew1-{{cookiecutter.project_id}}.iam.gserviceaccount.com",
+        "target": "vwt-p-gew1-{{cookiecutter.project_id}}"
+      },
+      {
+        "action": "roles/iam.serviceAccountUser",
+        "assignee": "serviceAccount:data-science@vwt-p-gew1-{{cookiecutter.project_id}}.iam.gserviceaccount.com",
+        "target": "vwt-p-gew1-{{cookiecutter.project_id}}"
+      },
+      {
+        "action": "roles/compute.instanceAdmin",
+        "assignee": "serviceAccount:data-science@vwt-p-gew1-{{cookiecutter.project_id}}.iam.gserviceaccount.com",
         "target": "vwt-p-gew1-{{cookiecutter.project_id}}"
       }
     ],
