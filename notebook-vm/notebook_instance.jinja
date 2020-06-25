@@ -45,6 +45,8 @@ resources:
            fi
        - key: tags
          value: deeplearning-vm
+       - key: notebook-disable-root
+         value: "True"
        {% if properties["mail"] %}
        - key: proxy-user-mail
          value: {{ properties["mail"] }}

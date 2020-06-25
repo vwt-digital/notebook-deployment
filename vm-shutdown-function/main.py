@@ -4,7 +4,7 @@ from googleapiclient import discovery
 import config
 import logging
 
-service = discovery.build('compute', 'v1')
+service = discovery.build('compute', 'v1', cache_discovery=False)
 
 logging.basicConfig(level=logging.DEBUG)
 
