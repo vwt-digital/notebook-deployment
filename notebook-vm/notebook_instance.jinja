@@ -45,8 +45,8 @@ resources:
             eval "$(ssh-agent -s)"
             ssh-add /home/jupyter/.ssh/id_rsa
             chmod 400 /home/jupyter/.ssh/id_rsa
-            sudo chown jupyter: /home/jupyter/.ssh//id_rsa
             ssh-keyscan github.com >> /home/jupyter/.ssh/known_hosts
+            sudo chown jupyter: /home/jupyter/.ssh//id_rsa
 
             if  [ ! -f "/home/jupyter/notebook.ipynb" ]; then
               wget  -O /home/jupyter/notebook.ipynb "https://raw.githubusercontent.com/vwt-digital/notebook-deployment/develop/notebook-vm/notebook.ipynb"
@@ -54,7 +54,8 @@ resources:
             fi
 
             REPO="{{properties["git-repo"]}}"
-            if [! -z $REPO] then
+            if [ ! -z "$REPO" ];
+            then
               echo "cloning $REPO"
               cd /home/jupyter/
               git clone $REPO
