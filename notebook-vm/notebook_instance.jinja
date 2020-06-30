@@ -44,6 +44,7 @@ resources:
             gcloud secrets versions access latest --secret={{ env["project"] }}-private-key-secret > /home/jupyter/.ssh/id_rsa
             eval "$(ssh-agent -s)"
             ssh-add /home/jupyter/.ssh/id_rsa
+            sudo chown jupyter: home/jupyter/.ssh
 
             if  [ ! -f "/home/jupyter/notebook.ipynb" ]; then
               wget  -O /home/jupyter/notebook.ipynb "https://raw.githubusercontent.com/vwt-digital/notebook-deployment/develop/notebook-vm/notebook.ipynb"
