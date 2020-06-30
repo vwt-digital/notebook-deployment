@@ -56,6 +56,6 @@ properties:
     description: git repository to clone on the vm.
 
   notebook-disable-root:
-    type: string
+    type: boolean
     default: "True"
     description: Should root be disabled on the vm.
