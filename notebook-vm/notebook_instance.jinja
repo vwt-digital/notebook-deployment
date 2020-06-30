@@ -52,9 +52,10 @@ resources:
               echo "downloaded notebook"
             fi
 
-            if [-z {{properties["git-repo"]}}] then
+            REPO="{{properties["git-repo"]}}"
+            if [! -z $REPO] then
               cd /home/jupyter/
-              git clone {{properties["git-repo"]}}
+              git clone $REPO
             fi
        - key: tags
          value: deeplearning-vm
