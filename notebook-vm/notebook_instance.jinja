@@ -54,8 +54,11 @@ resources:
 
             REPO="{{properties["git-repo"]}}"
             if [! -z $REPO] then
+              echo "cloning $REPO"
               cd /home/jupyter/
               git clone $REPO
+            else
+              echo "Nothing to clone"$REPO
             fi
        - key: tags
          value: deeplearning-vm
