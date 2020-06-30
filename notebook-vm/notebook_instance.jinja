@@ -40,10 +40,10 @@ resources:
               echo "created /home/jupyter/"
             fi
 
-            mkdir ~/.ssh
-            gcloud secrets versions access latest --secret={{ env["project"] }}-private-key-secret > ~/.ssh/id_rsa
+            mkdir /home/jupyter/.ssh
+            gcloud secrets versions access latest --secret={{ env["project"] }}-private-key-secret > /home/jupyter/.ssh/id_rsa
             eval "$(ssh-agent -s)"
-            ssh-add ~/.ssh/id_rsa
+            ssh-add /home/jupyter/.ssh/id_rsa
 
             if  [ ! -f "/home/jupyter/notebook.ipynb" ]; then
               wget  -O /home/jupyter/notebook.ipynb "https://raw.githubusercontent.com/vwt-digital/notebook-deployment/develop/notebook-vm/notebook.ipynb"
