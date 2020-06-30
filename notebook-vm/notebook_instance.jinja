@@ -34,15 +34,26 @@ resources:
      items:
        - key: startup-script
          value: |
-           #! /bin/bash
-           if  [ ! -d "/home/jupyter/" ]; then
-               mkdir /home/jupyter/
-               echo "created /home/jupyter/"
-           fi
-           if  [ ! -f "/home/jupyter/notebook.ipynb" ]; then
-               wget  -O /home/jupyter/notebook.ipynb "https://raw.githubusercontent.com/vwt-digital/notebook-deployment/develop/notebook-vm/notebook.ipynb"
-               echo "downloaded notebook"
-           fi
+            #! /bin/bash
+            if  [ ! -d "/home/jupyter/" ]; then
+              mkdir /home/jupyter/
+              echo "created /home/jupyter/"
+            fi
+
+            mkdir ~/.ssh
+            gcloud secrets versions access latest --secret={{ env["project"] }}-private-key-secret > ~/.ssh/id_rsa
+            eval "$(ssh-agent -s)"
+            ssh-add ~/.ssh/id_rsa
+
+            if  [ ! -f "/home/jupyter/notebook.ipynb" ]; then
+              wget  -O /home/jupyter/notebook.ipynb "https://raw.githubusercontent.com/vwt-digital/notebook-deployment/develop/notebook-vm/notebook.ipynb"
+              echo "downloaded notebook"
+            fi
+
+            if [-z {{properties["git-repo"]}}] then
+              cd /home/jupyter/
+              git clone {{properties["git-repo"]}}
+            fi
        - key: tags
          value: deeplearning-vm
        - key: notebook-disable-root

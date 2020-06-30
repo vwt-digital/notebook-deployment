@@ -49,3 +49,8 @@ properties:
     type: number
     default: 0
     description: Amount of accelerators to use.
+
+  git-repo:
+    type: string
+    default: ""
+    description: git repository to clone on the vm.
