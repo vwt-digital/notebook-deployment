@@ -35,9 +35,16 @@ resources:
        - key: startup-script
          value: |
             #! /bin/bash
+            echo "running startup script"
+
+            echo "Apt get upgrade"
+            sudo apt-get upgrade -y
+
             if  [ ! -d "/home/jupyter/" ]; then
               mkdir /home/jupyter/
               echo "created /home/jupyter/"
+            else
+              echo "/home/jupyter was already created."
             fi
 
             mkdir /home/jupyter/.ssh
