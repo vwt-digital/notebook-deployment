@@ -8,10 +8,7 @@ resources:
   type: compute.v1.firewall
   properties:
     network: $(ref.{{ env["project"] }}-vn.selfLink)
-    allowed:
-    - IPProtocol: TCP
-      ports:
-      - 22
+    allowed: []
 
 - name: {{ env["project"] }}-vm
   type: compute.v1.instance
