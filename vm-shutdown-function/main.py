@@ -5,7 +5,6 @@ import config
 import logging
 from datetime import datetime
 
-
 service = discovery.build('compute', 'v1', cache_discovery=False)
 
 logging.basicConfig(level=logging.DEBUG)
@@ -14,6 +13,7 @@ logging.basicConfig(level=logging.DEBUG)
 def auto_shutdown(args):
     # notebook_vms = get_notebook_vms()
     instances = monitor_vms()
+    logging.info(f"Found {instances} to shutdown")
 
     for vm in instances:
         logging.debug(f"Checking {vm.metric.labels['instance_name']}")
@@ -38,10 +38,14 @@ def set_last_active(instance_name):
 
     }
     meta_data_body['items'].append({"key": "last-active", "value": datetime.today().strftime('%Y-%m-%d')})
-    service.instances().setMetadata(project=config.project,
-                                    zone=config.zone,
-                                    isntance=instance_name,
-                                    body=meta_data_body)
+    result = service.instances().setMetadata(project=config.project,
+                                             zone=config.zone,
+                                             instance=instance_name,
+                                             body=meta_data_body)
+
+    logging.info("Added last active date")
+
+    logging.info(f"{result}")
 
 
 def shutdown(instance):
