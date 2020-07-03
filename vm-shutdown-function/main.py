@@ -3,6 +3,8 @@ from google.cloud.monitoring_v3 import query
 from googleapiclient import discovery
 import config
 import logging
+from datetime import datetime
+
 
 service = discovery.build('compute', 'v1', cache_discovery=False)
 
@@ -18,7 +20,28 @@ def auto_shutdown(args):
         # if vm.metric.labels['instance_name'] in notebook_vms:
         points = [x.value.double_value * 100 for x in vm.points]
         if max(points) < config.min_cpu_usage_percent:
-            shutdown(vm.metric.labels['instance_name'])
+            instance_name = vm.metric.labels['instance_name']
+            shutdown(instance_name)
+            # set_last_active(instance_name)
+
+
+def set_last_active(instance_name):
+    instance = service.instances().get(project=config.project,
+                                       zone=config.zone,
+                                       instance=instance_name).execute()
+    meta_data_body = {
+        'fingerprint': 'kp-L8ZgMNuc=',
+        'items': [
+            x for x in instance['metadata']['items'] if x['key'] != "last-active"
+        ],
+        'kind': 'compute#metadata'
+
+    }
+    meta_data_body['items'].append({"key": "last-active", "value": datetime.today().strftime('%Y-%m-%d')})
+    service.instances().setMetadata(project=config.project,
+                                    zone=config.zone,
+                                    isntance=instance_name,
+                                    body=meta_data_body)
 
 
 def shutdown(instance):
