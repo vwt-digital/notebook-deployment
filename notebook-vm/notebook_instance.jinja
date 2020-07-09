@@ -34,22 +34,50 @@ resources:
      items:
        - key: startup-script
          value: |
-           #! /bin/bash
-           if  [ ! -d "/home/jupyter/" ]; then
-               mkdir /home/jupyter/
-               echo "created /home/jupyter/"
-           fi
-           if  [ ! -f "/home/jupyter/notebook.ipynb" ]; then
-               wget  -O /home/jupyter/notebook.ipynb "https://raw.githubusercontent.com/vwt-digital/notebook-deployment/develop/notebook-vm/notebook.ipynb"
-               echo "downloaded notebook"
-           fi
+            #! /bin/bash
+            echo "running startup script"
+
+            echo "Apt get upgrade"
+            sudo apt-get upgrade -y
+
+            if  [ ! -d "/home/jupyter/" ]; then
+              mkdir /home/jupyter/
+              echo "created /home/jupyter/"
+            else
+              echo "/home/jupyter was already created."
+            fi
+
+            mkdir /home/jupyter/.ssh
+            gcloud secrets versions access latest --secret={{ env["project"] }}-private-key-secret > /home/jupyter/.ssh/id_rsa
+            eval "$(ssh-agent -s)"
+            ssh-add /home/jupyter/.ssh/id_rsa
+            chmod 400 /home/jupyter/.ssh/id_rsa
+            ssh-keyscan github.com >> /home/jupyter/.ssh/known_hosts
+            sudo chown jupyter: /home/jupyter/.ssh//id_rsa
+
+            if  [ ! -f "/home/jupyter/notebook.ipynb" ]; then
+              wget  -O /home/jupyter/notebook.ipynb "https://raw.githubusercontent.com/vwt-digital/notebook-deployment/develop/notebook-vm/notebook.ipynb"
+              echo "downloaded notebook"
+            fi
+
+            REPO="{{properties["git-repo"]}}"
+            if [ ! -z "$REPO" ];
+            then
+              echo "cloning $REPO"
+              cd /home/jupyter/
+              git clone $REPO
+            else
+              echo "Nothing to clone"$REPO
+            fi
        - key: tags
          value: deeplearning-vm
+       {% if properties["notebook-disable-root"] == "True" %}
        - key: notebook-disable-root
          value: "True"
+       {% endif %}
        {% if properties["mail"] %}
        - key: proxy-user-mail
-         value: {{ properties["mail"] }}
+       value: {{ properties["mail"] }}
        {% endif %}
        - key: proxy-mode
          value: {{ properties["proxy-mode"] }}

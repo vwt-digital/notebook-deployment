@@ -49,3 +49,13 @@ properties:
     type: number
     default: 0
     description: Amount of accelerators to use.
+
+  git-repo:
+    type: string
+    default: ""
+    description: git repository to clone on the vm.
+
+  notebook-disable-root:
+    type: string
+    default: "True"
+    description: Should root be disabled on the vm.

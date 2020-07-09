@@ -10,6 +10,30 @@ steps:
         git clone --branch=${BRANCH_NAME} https://github.com/vwt-digital/dcat-deploy.git
         dcat-deploy/deploy_dcat_gcp.sh config/${PROJECT_ID}/data_catalog.json ${PROJECT_ID} ${BRANCH_NAME}
 
+  # Create a ssh key, if unavailable
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        #!/bin/bash
+        echo "Start script"
+        EMAIL="{{cookiecutter.email}}"
+
+        EXISTING=$(gcloud secrets versions access latest --secret=${PROJECT_ID}-private-key-secret)
+
+        if [ -z "$$EXISTING" ]
+        then
+          echo "generating keys"
+          ssh-keygen -t rsa -b 4096 -C $$EMAIL -f id_rsa -N ""
+          gcloud secrets versions add ${PROJECT_ID}-private-key-secret --data-file="id_rsa"
+          echo "Added private key as new version in ${PROJECT_ID}-private-key-secret"
+          gsutil cp id_rsa.pub gs://${PROJECT_ID}-data-stg/
+          echo "added public key to storage bucket ${PROJECT_ID}-data-stg/"
+        else
+            echo "Key was already generated"
+        fi
+
   # Get notebook-deployment repo
   - name: 'gcr.io/cloud-builders/git'
     args:
@@ -87,3 +111,16 @@ steps:
       - '--project=${PROJECT_ID}'
       - '--oidc-service-account-email=${PROJECT_ID}@appspot.gserviceaccount.com'
       - '--oidc-token-audience=https://europe-west1-${PROJECT_ID}.cloudfunctions.net/${PROJECT_ID}-auto-shutdown-func'
+
+  # Schedule cloud build to remove inactive notebook
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud scheduler jobs create http ${PROJECT_ID}-run-backup \
+        --schedule="${minute} 4 * * *" \
+        --uri="https://cloudbuild.googleapis.com/v1/projects/${PROJECT_ID}/builds" \
+        --message-body-from-file=cloudbuild_backup_gen.json \
+        --oauth-service-account-email="${PROJECT_ID}@appspot.gserviceaccount.com" \
+        --oauth-token-scope=https://www.googleapis.com/auth/cloud-platform
