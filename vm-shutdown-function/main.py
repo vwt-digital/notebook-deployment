@@ -30,8 +30,9 @@ def set_last_active(instance_name):
     instance = service.instances().get(project=config.project,
                                        zone=config.zone,
                                        instance=instance_name).execute()
+
     meta_data_body = {
-        'fingerprint': 'kp-L8ZgMNuc=',
+        'fingerprint': instance['metadata']['fingerprint'],
         'items': [
             x for x in instance['metadata']['items'] if x['key'] != "last-active"
         ],
