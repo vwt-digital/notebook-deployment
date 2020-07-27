@@ -43,11 +43,12 @@ def set_last_active(instance_name):
     result: googleapiclient.http.HttpRequest = service.instances().setMetadata(project=config.project,
                                                                                zone=config.zone,
                                                                                instance=instance_name,
-                                                                               body=meta_data_body)
+                                                                               body=meta_data_body).execute()
 
     logging.info("Added last active date")
 
     logging.info(f"{result.body}")
+    logging.info(f"{result.headers}")
 
 
 def shutdown(instance):
