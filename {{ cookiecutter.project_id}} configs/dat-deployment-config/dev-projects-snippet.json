@@ -30,6 +30,11 @@
                 "target": "vwt-d-gew1-{{cookiecutter.project_id}}"
             },
             {
+                "action": "roles/iam.serviceAccountUser",
+                "assignee": "serviceAccount:vwt-d-gew1-{{cookiecutter.project_id}}@appspot.gserviceaccount.com",
+                "target": "vwt-d-gew1-{{cookiecutter.project_id}}"
+            },
+            {
                 "action": "roles/compute.instanceAdmin",
                 "assignee": "serviceAccount:data-science@vwt-d-gew1-{{cookiecutter.project_id}}.iam.gserviceaccount.com",
                 "target": "vwt-d-gew1-{{cookiecutter.project_id}}"
