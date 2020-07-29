@@ -11,12 +11,12 @@
       },
       {
         "action": "roles/monitoring.viewer",
-        "assignee": "serviceAccount:{{cookiecutter.project_id}}@appspot.gserviceaccount.com",
+        "assignee": "serviceAccount:vwt-p-gew1-{{cookiecutter.project_id}}@appspot.gserviceaccount.com",
         "target": "vwt-p-gew1-{{cookiecutter.project_id}}"
       },
       {
         "action": "roles/cloudmigration.inframanager",
-        "assignee": "serviceAccount:{{cookiecutter.project_id}}@appspot.gserviceaccount.com",
+        "assignee": "serviceAccount:vwt-p-gew1-{{cookiecutter.project_id}}@appspot.gserviceaccount.com",
         "target": "vwt-p-gew1-{{cookiecutter.project_id}}"
       },
       {
