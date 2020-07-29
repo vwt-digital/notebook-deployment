@@ -1,4 +1,3 @@
-import googleapiclient.http
 from google.cloud import monitoring_v3
 from google.cloud.monitoring_v3 import query
 from googleapiclient import discovery
@@ -40,15 +39,14 @@ def set_last_active(instance_name):
 
     }
     meta_data_body['items'].append({"key": "last-active", "value": datetime.today().strftime('%Y-%m-%d')})
-    result: googleapiclient.http.HttpRequest = service.instances().setMetadata(project=config.project,
-                                                                               zone=config.zone,
-                                                                               instance=instance_name,
-                                                                               body=meta_data_body).execute()
+    result = service.instances().setMetadata(project=config.project,
+                                             zone=config.zone,
+                                             instance=instance_name,
+                                             body=meta_data_body).execute()
 
     logging.info("Added last active date")
 
-    logging.info(f"{result.body}")
-    logging.info(f"{result.headers}")
+    logging.info(f"{result}")
 
 
 def shutdown(instance):
