@@ -21,8 +21,8 @@ def auto_shutdown(args):
         points = [x.value.double_value * 100 for x in vm.points]
         if max(points) < config.min_cpu_usage_percent:
             instance_name = vm.metric.labels['instance_name']
-            shutdown(instance_name)
             set_last_active(instance_name)
+            shutdown(instance_name)
         else:
             logging.info(f"{vm.metric.labels['instance_name']} was recently active: {max(points)}%")
 
