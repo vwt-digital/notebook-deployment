@@ -14,15 +14,16 @@ def auto_remove(args):
         response = request.execute()
 
         for instance in response['items']:
-            print(instance['name'])
-            print(instance['status'])
+            logging.info(instance['name'])
+            logging.info(instance['status'])
             d = {x['key']: x['value'] for x in instance['metadata']['items']}
             date_str = d.get("last-active")
             if date_str:
                 date_object = datetime.strptime(date_str, '%Y-%m-%d').date()
-                print(date_object)
+                logging.info(f"Last active date: {date_object}")
                 days_since_last_active = (datetime.now().date() - date_object).days
                 if days_since_last_active > config.turned_off_days:
+                    logging.info(f"Removing {instance['name']}")
                     delete_request = service.instances().delete(project=config.project,
                                                                 zone=config.zone,
                                                                 instance=instance['name'])
