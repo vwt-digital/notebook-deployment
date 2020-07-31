@@ -114,7 +114,7 @@ steps:
 
   # Deploy auto remove function
   - name: 'gcr.io/cloud-builders/gcloud'
-    id: 'auto-shutdown-deploy'
+    id: 'auto-remove-deploy'
     args:
       - 'functions'
       - 'deploy'
