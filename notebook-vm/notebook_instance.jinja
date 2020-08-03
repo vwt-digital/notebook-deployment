@@ -66,6 +66,7 @@ resources:
             git clone --branch master https://github.com/vwt-digital/commit-hooks.git
             echo "Cloned commit hooks"
             cd commit-hooks
+            docker run hello-world
             gcloud auth configure-docker
             echo "configured auth docker"
             ./install.sh
