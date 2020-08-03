@@ -1,0 +1,76 @@
+{
+    "identifier": "vwt/dat/vwt-d-gew4-dat-backup-vwt-d-gew1-{{cookiecutter.project_id}}-backup-stg",
+    "title": "Backup of storage of vwt-d-gew1-{{cookiecutter.project_id}} project",
+    "accessLevel": "confidential",
+    "rights": "The dataset contains backup of the data of vwt-d-gew1-{{cookiecutter.project_id}} project, it could contain PII data.",
+    "contactPoint": {
+        "fn": "{{cookiecutter.name}}",
+        "hasEmail": "mailto:{{cookiecutter.email}}"
+    },
+    "publisher": {
+        "name": "{{cookiecutter.publisherName}}",
+        "subOrganizationOf": {
+            "name": "{{cookiecutter.publisherOrganization}}"
+        }
+    },
+    "keyword": [],
+    "modified": "R/P1D",
+    "spatial": "Netherlands",
+    "accrualPeriodicity": "R/P1D",
+    "issued": "2020-07",
+    "distribution": [
+        {
+            "accessURL": "https://console.cloud.google.com/storage/browser/vwt-d-gew4-dat-backup-vwt-d-gew1-{{cookiecutter.project_id}}-backup-stg",
+            "format": "blob-storage",
+            "deploymentProperties": {
+                "location": "europe-west4",
+                "versioning": {
+                    "enabled": true
+                },
+                "lifecycle": {
+                    "rule": [
+                        {
+                            "action": {
+                                "type": "Delete"
+                            },
+                            "condition": {
+                                "numNewerVersions": 5
+                            }
+                        },
+                        {
+                            "action": {
+                                "type": "Delete"
+                            },
+                            "condition": {
+                                "age": 30,
+                                "isLive": false
+                            }
+                        }
+                    ]
+                }
+            },
+            "title": "vwt-d-gew4-dat-backup-vwt-d-gew1-{{cookiecutter.project_id}}-backup-stg",
+            "description": "VWT production environment at Google europe-west4 containing backup blob storage"
+        }
+    ],
+    "odrlPolicy": {
+        "uid": "vwt/dat/vwt-d-gew4-dat-backup-vwt-d-gew1-{{cookiecutter.project_id}}-backup-stg-policy",
+        "permission": [
+            {
+                "target": "vwt-d-gew4-dat-backup-vwt-d-gew1-{{cookiecutter.project_id}}-backup-stg",
+                "action": "write",
+                "assignee": "serviceAccount:[projectnumber]@cloudbuild.gserviceaccount.com"
+            },
+            {
+                "target": "vwt-d-gew4-dat-backup-vwt-d-gew1-{{cookiecutter.project_id}}-backup-stg",
+                "action": "modify",
+                "assignee": "projectOwner:vwt-d-gew4-dat-backup"
+            },
+            {
+                "target": "vwt-d-gew4-dat-backup-vwt-d-gew1-{{cookiecutter.project_id}}-backup-stg",
+                "action": "read",
+                "assignee": "serviceAccount:backup-sync@vwt-d-gew4-dat-backup.iam.gserviceaccount.com"
+            }
+        ]
+    }
+}
