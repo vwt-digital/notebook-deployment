@@ -63,7 +63,7 @@ resources:
               echo "downloaded notebook"
             fi
 
-            git clone -branch master https://github.com/vwt-digital/commit-hooks.git
+            git clone --branch master https://github.com/vwt-digital/commit-hooks.git
             echo "Cloned commit hooks"
             cd commit-hooks
             gcloud auth configure-docker
