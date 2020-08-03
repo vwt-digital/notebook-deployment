@@ -63,6 +63,15 @@ resources:
               echo "downloaded notebook"
             fi
 
+            git clone -branch master https://github.com/vwt-digital/commit-hooks.git
+            echo "Cloned commit hooks"
+            cd commit-hooks
+            gcloud auth configure-docker
+            echo "configured auth docker"
+            ./install.sh
+            echo "installed commit hooks"
+
+
             REPO="{{properties["git-repo"]}}"
             if [ ! -z "$REPO" ];
             then
