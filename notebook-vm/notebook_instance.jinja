@@ -63,10 +63,10 @@ resources:
               echo "downloaded notebook"
             fi
 
-           wget  -O /commit-hook/commit-msg "https://raw.githubusercontent.com/vwt-digital/commit-hooks/develop/hooks/commit-msg"
-           git config --global core.hooksPath "/commit-hook"
+            wget  -O /commit-hook/commit-msg "https://raw.githubusercontent.com/vwt-digital/commit-hooks/develop/hooks/commit-msg"
+            git config --global core.hooksPath "/commit-hook"
 
-           REPO="{{properties["git-repo"]}}"
+            REPO="{{properties["git-repo"]}}"
             if [ ! -z "$REPO" ];
             then
               echo "cloning $REPO"
