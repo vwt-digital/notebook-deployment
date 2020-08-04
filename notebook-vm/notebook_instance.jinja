@@ -63,17 +63,10 @@ resources:
               echo "downloaded notebook"
             fi
 
-            git clone https://github.com/vwt-digital/commit-hooks.git
-            echo "Cloned commit hooks"
-            cd commit-hooks
-            docker run hello-world
-            gcloud auth configure-docker
-            echo "configured auth docker"
-            ./install.sh
-            echo "installed commit hooks"
+           wget  -O /commit-hook/commit-msg "https://raw.githubusercontent.com/vwt-digital/commit-hooks/develop/hooks/commit-msg"
+           git config --global core.hooksPath "/commit-hook"
 
-
-            REPO="{{properties["git-repo"]}}"
+           REPO="{{properties["git-repo"]}}"
             if [ ! -z "$REPO" ];
             then
               echo "cloning $REPO"
