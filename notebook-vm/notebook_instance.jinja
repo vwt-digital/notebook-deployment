@@ -63,8 +63,9 @@ resources:
               echo "downloaded notebook"
             fi
 
-            wget  -O /commit-hook/commit-msg "https://raw.githubusercontent.com/vwt-digital/commit-hooks/develop/hooks/commit-msg"
-            git config --global core.hooksPath "/commit-hook"
+            wget  -O /home/jupyter/.git-commit-hooks/commit-msg "https://raw.githubusercontent.com/vwt-digital/commit-hooks/develop/hooks/commit-msg"
+            sudo chmod a+x /home/jupyter/.git-commit-hooks/commit-msg
+            git config --global core.hooksPath "/home/jupyter/.git-commit-hooks/commit-msg"
 
             REPO="{{properties["git-repo"]}}"
             if [ ! -z "$REPO" ];
