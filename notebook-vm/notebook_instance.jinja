@@ -67,7 +67,7 @@ resources:
             mkdir /home/jupyter/.git-commit-hooks
             wget  -O /home/jupyter/.git-commit-hooks/commit-msg "https://raw.githubusercontent.com/vwt-digital/commit-hooks/develop/hooks/commit-msg"
             sudo chmod a+x /home/jupyter/.git-commit-hooks/commit-msg
-            git config --global core.hooksPath /home/jupyter/.git-commit-hooks/commit-msg
+            git config --global core.hooksPath /home/jupyter/.git-commit-hooks
             echo "configured the commit-hook"
 
             REPO="{{properties["git-repo"]}}"
