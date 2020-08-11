@@ -12,7 +12,9 @@ else
 	gcloud deployment-manager deployments update "$2" --config config.yaml --project="$1"
 fi
 
-export INSTANCE_NAME="$1"-vm
+gsutil cp notebook-deployment/notebook-vm/startup-script.sh gs://"$1"-data-stg/
+
+export INSTANCE_NAME="$2"
 export VM_IMAGE_PROJECT="deeplearning-platform-release"
 export VM_IMAGE_FAMILY="common-cpu"
 export MACHINE_TYPE="n1-standard-1"
@@ -25,8 +27,8 @@ RES=$(gcloud beta notebooks instances list \
   --location=$LOCATION \
   --format 'value(name)'
   )
-if [[ "$RES" == *"$1"* ]]; then
-  echo "vm $1 already exists"
+if [[ "$RES" == *"$INSTANCE_NAME"* ]]; then
+  echo "vm $INSTANCE_NAME already exists"
 else
   echo "creating vm " "$INSTANCE_NAME"
   gcloud beta notebooks instances create "$INSTANCE_NAME" \
