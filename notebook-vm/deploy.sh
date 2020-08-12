@@ -1,3 +1,4 @@
+#!/bin/bash
 echo "Project ID: $1"
 echo "Deployment name: $2"
 
@@ -27,6 +28,7 @@ RES=$(gcloud beta notebooks instances list \
   --location=$LOCATION \
   --format 'value(name)'
   )
+
 if [[ "$RES" == *"$INSTANCE_NAME"* ]]; then
   echo "vm $INSTANCE_NAME already exists"
 else
