@@ -13,7 +13,7 @@ else
 	gcloud deployment-manager deployments update "$2" --config config.yaml --project="$1"
 fi
 
-gsutil cp notebook-deployment/notebook-vm/startup-script.sh gs://"$1"-data-stg/
+gsutil cp /workspace/notebook-deployment/notebook-vm/startup-script.sh gs://"$1"-data-stg/
 
 export INSTANCE_NAME="$2"
 export VM_IMAGE_PROJECT="deeplearning-platform-release"
