@@ -13,24 +13,27 @@ logging.basicConfig(level=logging.DEBUG)
 def auto_shutdown(args):
     # notebook_vms = get_notebook_vms()
     instances = monitor_vms()
-    logging.info(f"Found {instances} to shutdown")
+    logging.info(f"Found {len(list(instances))} to shutdown")
 
     for vm in instances:
-        logging.debug(f"Checking {vm.metric.labels['instance_name']}")
+        logging.info(f"Checking {vm.metric.labels['instance_name']}")
         # if vm.metric.labels['instance_name'] in notebook_vms:
         points = [x.value.double_value * 100 for x in vm.points]
         if max(points) < config.min_cpu_usage_percent:
             instance_name = vm.metric.labels['instance_name']
-            shutdown(instance_name)
             set_last_active(instance_name)
+            shutdown(instance_name)
+        else:
+            logging.info(f"{vm.metric.labels['instance_name']} was recently active: {max(points)}%")
 
 
 def set_last_active(instance_name):
     instance = service.instances().get(project=config.project,
                                        zone=config.zone,
                                        instance=instance_name).execute()
+
     meta_data_body = {
-        'fingerprint': 'kp-L8ZgMNuc=',
+        'fingerprint': instance['metadata']['fingerprint'],
         'items': [
             x for x in instance['metadata']['items'] if x['key'] != "last-active"
         ],
@@ -41,7 +44,7 @@ def set_last_active(instance_name):
     result = service.instances().setMetadata(project=config.project,
                                              zone=config.zone,
                                              instance=instance_name,
-                                             body=meta_data_body)
+                                             body=meta_data_body).execute()
 
     logging.info("Added last active date")
 

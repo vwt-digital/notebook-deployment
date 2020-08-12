@@ -1,60 +1,65 @@
 {
-  "projectId": "vwt-p-gew1-{{cookiecutter.project_id}}",
-  "appEngineRegion": "europe-west",
-  "defaultNetwork": "false",
-  "odrlPolicy": {
-    "permission": [
-      {
-        "action": "roles/compute.instanceAdmin",
-        "assignee": "group:development@vwt.digital",
-        "target": "vwt-p-gew1-{{cookiecutter.project_id}}"
-      },
-      {
-        "action": "roles/monitoring.viewer",
-        "assignee": "serviceAccount:{{cookiecutter.project_id}}@appspot.gserviceaccount.com",
-        "target": "vwt-p-gew1-{{cookiecutter.project_id}}"
-      },
-      {
-        "action": "roles/cloudmigration.inframanager",
-        "assignee": "serviceAccount:{{cookiecutter.project_id}}@appspot.gserviceaccount.com",
-        "target": "vwt-p-gew1-{{cookiecutter.project_id}}"
-      },
-      {
-        "action": "roles/notebooks.admin",
-        "assignee": "serviceAccount:data-science@vwt-p-gew1-{{cookiecutter.project_id}}.iam.gserviceaccount.com",
-        "target": "vwt-p-gew1-{{cookiecutter.project_id}}"
-      },
-      {
-        "action": "roles/iam.serviceAccountUser",
-        "assignee": "serviceAccount:data-science@vwt-p-gew1-{{cookiecutter.project_id}}.iam.gserviceaccount.com",
-        "target": "vwt-p-gew1-{{cookiecutter.project_id}}"
-      },
-      {
-        "action": "roles/compute.instanceAdmin",
-        "assignee": "serviceAccount:data-science@vwt-p-gew1-{{cookiecutter.project_id}}.iam.gserviceaccount.com",
-        "target": "vwt-p-gew1-{{cookiecutter.project_id}}"
-      }
-    ],
-    "uid": "vwt-p-gew1-{{cookiecutter.project_id}}-policy"
-  },
-  "triggers": [
-    {
-      "filename": "cloudbuild.yaml",
-      "github": {
-        "name": "{{cookiecutter.project_id}}-config",
-        "owner": "vwt-digital-config",
-        "push": {
-          "branch": "master"
+    "projectId": "vwt-p-gew1-{{cookiecutter.project_id}}",
+    "appEngineRegion": "europe-west",
+    "defaultNetwork": "false",
+    "odrlPolicy": {
+        "permission": [
+            {
+                "action": "roles/compute.instanceAdmin",
+                "assignee": "group:development@vwt.digital",
+                "target": "vwt-p-gew1-{{cookiecutter.project_id}}"
+            },
+            {
+                "action": "roles/monitoring.viewer",
+                "assignee": "serviceAccount:vwt-p-gew1-{{cookiecutter.project_id}}@appspot.gserviceaccount.com",
+                "target": "vwt-p-gew1-{{cookiecutter.project_id}}"
+            },
+            {
+                "action": "roles/cloudmigration.inframanager",
+                "assignee": "serviceAccount:vwt-p-gew1-{{cookiecutter.project_id}}@appspot.gserviceaccount.com",
+                "target": "vwt-p-gew1-{{cookiecutter.project_id}}"
+            },
+            {
+                "action": "roles/notebooks.admin",
+                "assignee": "serviceAccount:data-science@vwt-p-gew1-{{cookiecutter.project_id}}.iam.gserviceaccount.com",
+                "target": "vwt-p-gew1-{{cookiecutter.project_id}}"
+            },
+            {
+                "action": "roles/iam.serviceAccountUser",
+                "assignee": "serviceAccount:data-science@vwt-p-gew1-{{cookiecutter.project_id}}.iam.gserviceaccount.com",
+                "target": "vwt-p-gew1-{{cookiecutter.project_id}}"
+            },
+            {
+                "action": "roles/iam.serviceAccountUser",
+                "assignee": "serviceAccount:vwt-p-gew1-{{cookiecutter.project_id}}@appspot.gserviceaccount.com",
+                "target": "vwt-p-gew1-{{cookiecutter.project_id}}"
+            },
+            {
+                "action": "roles/compute.instanceAdmin",
+                "assignee": "serviceAccount:data-science@vwt-p-gew1-{{cookiecutter.project_id}}.iam.gserviceaccount.com",
+                "target": "vwt-p-gew1-{{cookiecutter.project_id}}"
+            }
+        ],
+        "uid": "vwt-p-gew1-{{cookiecutter.project_id}}-policy"
+    },
+    "triggers": [
+        {
+            "filename": "cloudbuild.yaml",
+            "github": {
+                "name": "{{cookiecutter.project_id}}-config",
+                "owner": "vwt-digital-config",
+                "push": {
+                    "branch": "master"
+                }
+            }
         }
-      }
-    }
-  ],
-  "services": [
-    "appengine.googleapis.com",
-    "compute.googleapis.com",
-    "oslogin.googleapis.com"
-  ],
-  "serviceAccounts": [
-    "data-science"
-  ]
+    ],
+    "services": [
+        "appengine.googleapis.com",
+        "compute.googleapis.com",
+        "oslogin.googleapis.com"
+    ],
+    "serviceAccounts": [
+        "data-science"
+    ]
 }
