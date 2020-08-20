@@ -38,6 +38,16 @@
                 "action": "roles/compute.instanceAdmin",
                 "assignee": "serviceAccount:data-science@vwt-p-gew1-{{cookiecutter.project_id}}.iam.gserviceaccount.com",
                 "target": "vwt-p-gew1-{{cookiecutter.project_id}}"
+            },
+            {
+                "action": "roles/iam.serviceAccountUser",
+                "assignee": "group:development@vwt.digital",
+                "target": "data-science@vwt-p-gew1-{{cookiecutter.project_id}}.iam.gserviceaccount.com"
+            },
+            {
+                "action": "roles/notebooks.admin",
+                "assignee": "group:development@vwt.digital",
+                "target": "vwt-p-gew1-{{cookiecutter.project_id}}"
             }
         ],
         "uid": "vwt-p-gew1-{{cookiecutter.project_id}}-policy"
