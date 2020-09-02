@@ -57,7 +57,8 @@
     "services": [
         "appengine.googleapis.com",
         "compute.googleapis.com",
-        "oslogin.googleapis.com"
+        "oslogin.googleapis.com",
+        "notebooks.googleapis.com"
     ],
     "serviceAccounts": [
         "data-science"

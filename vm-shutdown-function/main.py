@@ -13,13 +13,15 @@ logging.basicConfig(level=logging.DEBUG)
 def auto_shutdown(args):
     # notebook_vms = get_notebook_vms()
     instances = monitor_vms()
-    logging.info(f"Found {len(list(instances))} to shutdown")
+    logging.info(f"Checking {len(list(instances))} instances for activity.")
 
     for vm in instances:
         logging.info(f"Checking {vm.metric.labels['instance_name']}")
         # if vm.metric.labels['instance_name'] in notebook_vms:
         points = [x.value.double_value * 100 for x in vm.points]
         if max(points) < config.min_cpu_usage_percent:
+            logging.info(f"{vm.metric.labels['instance_name']} was not recently active.")
+
             instance_name = vm.metric.labels['instance_name']
             set_last_active(instance_name)
             shutdown(instance_name)
@@ -59,6 +61,7 @@ def shutdown(instance):
 
 
 def monitor_vms():
+    logging.info("Checking active time of the vms")
     client = monitoring_v3.MetricServiceClient()
     cpu_query = query.Query(client,
                             project=config.project,
