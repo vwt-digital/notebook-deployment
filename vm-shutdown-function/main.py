@@ -1,3 +1,5 @@
+import time
+
 from google.cloud import monitoring_v3
 from google.cloud.monitoring_v3 import query
 from googleapiclient import discovery
@@ -11,25 +13,30 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 def auto_shutdown(args):
-    # notebook_vms = get_notebook_vms()
-    instances = monitor_vms()
-    logging.info(f"Checking {len(list(instances))} instances for activity.")
+    try:
+        # notebook_vms = get_notebook_vms()
+        instances = monitor_vms()
+        logging.info(f"Checking {len(list(instances))} instances for activity.")
 
-    for vm in instances:
-        logging.info(f"Checking {vm.metric.labels['instance_name']}")
-        # if vm.metric.labels['instance_name'] in notebook_vms:
-        points = [x.value.double_value * 100 for x in vm.points]
-        if max(points) < config.min_cpu_usage_percent:
-            logging.info(f"{vm.metric.labels['instance_name']} was not recently active.")
+        for vm in instances:
+            logging.info(f"Checking {vm.metric.labels['instance_name']}")
+            # if vm.metric.labels['instance_name'] in notebook_vms:
+            points = [x.value.double_value * 100 for x in vm.points]
+            if max(points) < config.min_cpu_usage_percent:
+                logging.info(f"{vm.metric.labels['instance_name']} was not recently active.")
 
-            instance_name = vm.metric.labels['instance_name']
-            set_last_active(instance_name)
-            shutdown(instance_name)
-        else:
-            logging.info(f"{vm.metric.labels['instance_name']} was recently active: {max(points)}%")
+                instance_name = vm.metric.labels['instance_name']
+                set_last_active(instance_name)
+                shutdown(instance_name)
+            else:
+                logging.info(f"{vm.metric.labels['instance_name']} was recently active: {max(points)}%")
+    except Exception as e:
+        logging.error(e, exc_info=True)
+        time.sleep(5)
 
 
 def set_last_active(instance_name):
+    logging.info(f"setting last active date for {instance_name}")
     instance = service.instances().get(project=config.project,
                                        zone=config.zone,
                                        instance=instance_name).execute()
